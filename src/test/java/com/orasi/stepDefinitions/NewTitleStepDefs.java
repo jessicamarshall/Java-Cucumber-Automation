@@ -40,7 +40,7 @@ public class NewTitleStepDefs {
 		this.browserUnderTest = System.getProperty("jenkinsBrowser");
 		System.out.println("Browser: " + browserUnderTest);
 		if (browserUnderTest == null)
-			browserUnderTest = "FIREFOX";
+			browserUnderTest = "CHROME";
 		this.runLocation = "LOCAL";
 		this.environment = System.getProperty("jenkinsTestEnvironment");
 		if(environment ==null){

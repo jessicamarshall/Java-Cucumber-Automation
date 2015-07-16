@@ -12,7 +12,8 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(
         features = "src/test/resources/features",
         format = {"pretty",
-                "html:target/cucumber-html-report/newTitle"},//what formatters to use
+                "html:target/cucumber-html-report/newTitle",//what formatters to use
+                "html:target/cucumber-json-report/newTitle"},//what formatters to use
         tags = {"@newTitle"})//what tags to include(@)/exclude(@~)
 public class TestNewTitle {
 
