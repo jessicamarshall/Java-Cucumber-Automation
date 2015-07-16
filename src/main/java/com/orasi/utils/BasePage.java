@@ -1,17 +1,17 @@
 package com.orasi.utils;
-
+import java.util.logging.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage {
 	
 	protected WebDriver driver = null;
-	private int timeout = 60;
+	private int timeout = 10;
+	private final static Logger LOGGER = Logger.getLogger("Logging"); 
 	
 	//Constructor
 	public BasePage(WebDriver driver) {
@@ -161,41 +161,105 @@ public class BasePage {
 		new Actions(driver).moveToElement(element).click().perform();
 	}
 	
-	public void waitUntilClickable(WebElement element, int timeOut) {
+	public boolean waitUntilClickable(WebElement element, int timeOut) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.elementToBeClickable(element));
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+		} catch (Exception e) {
+			LOGGER.info("Element was not clickable: " + element.toString());
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 	
-	public void waitUntilTextToBePresent(WebElement element, int timeOut, String text) {
+	public boolean waitUntilTextToBePresent(WebElement element, int timeOut, String text) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+		try {
+			wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+		} catch (Exception e) {
+			LOGGER.info("Text was not present in element: " + text);
+			System.out.println(e);
+			return false;
+		}
+		return true;
+
 	}
 	
-	public void waitUntilToBeSelected(WebElement element, int timeOut) {
+	public boolean waitUntilToBeSelected(WebElement element, int timeOut) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.elementToBeSelected(element));
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+		} catch (Exception e) {
+			LOGGER.info("Element was not clickable");
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 	
-	public void waitUntilTextToBePresentInValue(WebElement element, int timeOut, String text) {
+	public boolean waitUntilTextToBePresentInValue(WebElement element, int timeOut, String text) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.textToBePresentInElementValue(element, text));
+		try {
+			wait.until(ExpectedConditions.textToBePresentInElementValue(element, text));
+		} catch (Exception e) {
+			LOGGER.info("Text was not present in element: " + text);
+			System.out.println(e);
+			return false;
+		}
+		return true;
+		
 	}
 	
-	public void waitUntilVisible(WebElement element, int timeOut) {
+	public boolean waitUntilVisible(WebElement element, int timeOut) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.visibilityOf(element));
+		try {
+			wait.until(ExpectedConditions.visibilityOf(element));
+		} catch (Exception e) {
+			LOGGER.info("Element was not visible");
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 	
-	public void waitUntilTitleIs(String title, int timeOut){
+
+	public boolean waitUntilTitleIs(String title, int timeOut){
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.titleIs(title));
+		
+		try {
+			wait.until(ExpectedConditions.titleIs(title));
+		} catch (Exception e) {
+			LOGGER.info("Page title was not equal to: " + title);
+			System.out.println(e);
+			return false;
+		}
+		return true;
+		
 	}
 	
-	public void waitUntilTitleContains(String title, int timeOut){
+	public boolean waitUntilTitleContains(String title, int timeOut){
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.titleIs(title));
+		try {
+			wait.until(ExpectedConditions.titleContains(title));
+		} catch (Exception e) {
+			LOGGER.info("Page title did not contain: " + title);
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 	
+	public boolean isDisplayed(WebElement element){
+		try {
+			element.isDisplayed();
+		} catch (Exception e) {
+			LOGGER.info("Element was not displayed");
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
 	
 	
 }

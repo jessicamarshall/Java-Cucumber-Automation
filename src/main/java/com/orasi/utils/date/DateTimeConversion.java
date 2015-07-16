@@ -11,10 +11,8 @@ public class DateTimeConversion {
 	}
 	
 	public static String ConvertToDate(String daysOut){
-		String date = "";
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Calendar cal = Calendar.getInstance();
-		String currentDate = dateFormat.format(cal.getTime());
 		cal.add(Calendar.DATE, Integer.parseInt(daysOut));
 		String convertedDate=dateFormat.format(cal.getTime());    
 		
@@ -22,10 +20,8 @@ public class DateTimeConversion {
 	}
 	
 	public String ConvertToDateMMDDYY(String daysOut){
-		String date = "";
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Calendar cal = Calendar.getInstance();
-		String currentDate = dateFormat.format(cal.getTime());
 		cal.add(Calendar.DATE, Integer.parseInt(daysOut));
 		String convertedDate=dateFormat.format(cal.getTime());    
 		
@@ -39,10 +35,8 @@ public class DateTimeConversion {
 
 	
 	public String ConvertToDateYYYYMMDD(String daysOut){
-		String date = "";
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
-		String currentDate = dateFormat.format(cal.getTime());
 		cal.add(Calendar.DATE, Integer.parseInt(daysOut));
 		String convertedDate=dateFormat.format(cal.getTime());    
 		

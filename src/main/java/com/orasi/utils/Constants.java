@@ -1,8 +1,6 @@
 package com.orasi.utils;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Calendar;
 
 
@@ -56,7 +54,7 @@ public class Constants {
     final static public int PAGE_TIMEOUT = 60;
     
     /** Selenium hub URL */
-    final static public String SELENIUM_HUB_URL = "http://dnhprpptst01.disid.disney.com:4444/wd/hub";
+    final static public String SELENIUM_HUB_URL = "http://10.238.242.50:4444//wd/hub";
     
     /** System properties */
     public static final String BROWSER_PROPERTY = "selenium.browser";

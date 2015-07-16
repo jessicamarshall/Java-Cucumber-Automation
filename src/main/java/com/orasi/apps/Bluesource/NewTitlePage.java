@@ -9,12 +9,12 @@ import com.orasi.utils.BasePage;
 
 
 
-public class DirectEmployeesPage extends BasePage{
+public class NewTitlePage extends BasePage{
 	
 
 	
 	//***** Constructor *****
-	public DirectEmployeesPage(WebDriver driver){
+	public NewTitlePage(WebDriver driver){
 		super(driver);
 		PageFactory.initElements(driver, this);
 		
@@ -24,11 +24,24 @@ public class DirectEmployeesPage extends BasePage{
 	
 	//***** all the page elements *****
 
+	@FindBy(id = "title_name")
+	private WebElement titleInput;
+	
+	@FindBy(name = "commit")
+	private WebElement createTitleInput;
 	
 	//***** Page interactions *****
 	
-	public static DirectEmployeesPage returnCurrentPage(WebDriver driver){
-		return new DirectEmployeesPage(driver);
+	public static NewTitlePage returnCurrentPage(WebDriver driver){
+		return new NewTitlePage(driver);
+	}
+	
+	public ListingTitlesPage createNewTitle(String titleName){
+		set(titleInput, titleName);
+		createTitleInput.click();
+		return new ListingTitlesPage(driver);
+		
+		
 	}
 	
 

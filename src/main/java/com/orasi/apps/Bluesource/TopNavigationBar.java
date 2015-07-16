@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.orasi.utils.BasePage;
-import com.orasi.utils.Element;
+
 
 
 public class TopNavigationBar extends BasePage{
@@ -38,6 +38,15 @@ public class TopNavigationBar extends BasePage{
 	@FindBy(linkText = "Calendar")
 	private WebElement calendarLink;
 	
+	@FindBy(xpath = "//a[text() = 'Admin ']")
+	private WebElement adminLink;
+	
+	@FindBy(linkText = "Departments")
+	private WebElement deptLink;
+	
+	@FindBy(linkText = "Titles")
+	private WebElement titlesLink;
+	
 	//***** Page interactions *****
 	
 	public static TopNavigationBar returnCurrentPage(WebDriver driver){
@@ -45,7 +54,25 @@ public class TopNavigationBar extends BasePage{
 	}
 	
 	public boolean isLogoutLinkDisplayed(){
-		return logoutLink.isDisplayed();
+		return isDisplayed(logoutLink);
 	}
+	
+	public void clickAdminLink(){
+		adminLink.click();
+	}
+	
+	public ListingTitlesPage clickTitlesLink(){
+		titlesLink.click();
+		return new ListingTitlesPage(driver);
+	}
+	
+	public void clickLogoutLink(){
+		logoutLink.click();
+	}
+	
+	public boolean waitUntilVisible(){
+		return waitUntilVisible(logoutLink, 5);
+	}
+	
 
 }

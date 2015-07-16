@@ -1,15 +1,12 @@
 package com.orasi.stepDefinitions;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import org.junit.Assert;
-
 import org.openqa.selenium.WebDriver;
 
 import com.orasi.apps.Bluesource.LoginPage;
 import com.orasi.apps.Bluesource.TopNavigationBar;
-
 import com.orasi.utils.WebDriverSetup;
 
 import cucumber.api.java.After;
@@ -20,7 +17,6 @@ import cucumber.api.java.en.When;
 
 public class LoginTestStepdefs {
 
-	private static final Logger LOGGER = Logger.getLogger(LoginTestStepdefs.class.getName());
     private String application = "";
     private String browserUnderTest = "";
     private String browserVersion = "";
@@ -30,39 +26,44 @@ public class LoginTestStepdefs {
     private WebDriver driver;
     private Object currentPage;
 	
-	@Before
-	public void launchDriver() throws InterruptedException, IOException{
+
+    @Before(value = "@login")
+    public void initialize() throws InterruptedException, IOException{
 		this.application = "BLUESOURCE";
-		this.browserUnderTest = "chrome";
-		this.runLocation = "local";
-		this.environment = "staging";
-		this.operatingSystem = "windows";
+		this.browserUnderTest = System.getProperty("jenkinsBrowser");
+		System.out.println("Browser: " + browserUnderTest);
+		if (browserUnderTest == null)
+			browserUnderTest = "FIREFOX";
+		this.runLocation = "REMOTE";
+		this.environment = System.getProperty("jenkinsTestEnvironment");
+		if(environment ==null){
+			environment = "STAGING";
+		}
+		this.operatingSystem = System.getProperty("jenkinsOperatingSystem");
+		if (operatingSystem == null)
+			operatingSystem = "LINUX";
 		
 		WebDriverSetup setup = new WebDriverSetup(application,
 				browserUnderTest, browserVersion, operatingSystem, runLocation,
 				environment);
 		driver = setup.initialize();
-	}
-	
+    }
+    
 	@After
 	public void cleanUp() {
-		driver.quit();
+		if (driver != null)
+			driver.quit();
 	}
 	
 	@Given("^I am on the login page$")
-	public void navigateToLogin(){
+	public void navigateToLogin() throws InterruptedException, IOException{
 		currentPage = LoginPage.returnCurrentPage(driver);
 		Assert.assertTrue(((LoginPage) currentPage).verifyPageDisplayed());
-		//LoginPage loginPage = new LoginPage(driver);
-		//Assert.assertTrue(loginPage.verifyPageDisplayed());
 	}
 	
 	@When("^I login with the COMPANY_ADMIN role$")
 	public void login_CompanyAdmin(){
 		currentPage = ((LoginPage) currentPage).loginAsCompanyAdmin();
-
-		
-		
 	}
 	
 	@When("^I login with the DEPARTMENT_ADMIN role$")

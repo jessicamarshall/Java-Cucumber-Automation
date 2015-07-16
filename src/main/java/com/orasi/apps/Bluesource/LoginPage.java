@@ -11,11 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.orasi.utils.BasePage;
 import com.orasi.utils.Constants;
-import com.orasi.utils.Element;
+
 
 public class LoginPage extends BasePage {
 
-	private String browserType;
+	//private String browserType;
 	private ResourceBundle userCredentialRepo = ResourceBundle.getBundle(Constants.USER_CREDENTIALS_PATH);
 	
 	//Constructor
@@ -54,7 +54,8 @@ public class LoginPage extends BasePage {
 	}
 	
 	public boolean verifyPageDisplayed(){
-		return username.isDisplayed();
+		return isDisplayed(username);
+		
 	}
 	
 	public TopNavigationBar loginAsCompanyAdmin() {

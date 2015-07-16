@@ -1,4 +1,4 @@
-@Login
+@login
 Feature: Validate login functionality
 	This feature tests that you can login to bluesource using the different roles
 	

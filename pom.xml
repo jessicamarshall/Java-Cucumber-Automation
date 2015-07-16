@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.42.2</version>
+            <version>2.46.0</version>
             <exclusions>
                 <exclusion>
                     <artifactId>guava</artifactId>
@@ -31,11 +31,6 @@
             <version>15.0</version>
         </dependency>
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.8</version>
-        </dependency>
-        <dependency>
     		<groupId>info.cukes</groupId>
     		<artifactId>cucumber-java</artifactId>
     		<version>1.2.2</version>
@@ -43,38 +38,42 @@
 		</dependency>
 		<dependency>
 			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-testng</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-junit</artifactId>
 			<version>1.2.2</version>
-		</dependency>
-        		    
+			<scope>test</scope>
+		</dependency>     
 </dependencies>
 
-<properties>
-	<testNGSourceDirectory>src/test/resources</testNGSourceDirectory>
-</properties>
+ <properties>
+   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ </properties>
 
 <build>
 	<pluginManagement>
 		<plugins>
+			
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+         		<groupId>org.apache.maven.plugins</groupId>
+          		<artifactId>maven-surefire-plugin</artifactId>
+          		<version>2.18.1</version>
+       			   		
+          		<configuration>
+		          	<parallel>classes</parallel>
+		          	<threadCount>5</threadCount>
+		          	
+		          	<excludes>
+		          		<exclude>**/TestLogin.java</exclude>
+		          	</excludes>
+		          
+			        <systemPropertyVariables>
+						<jenkinsOperatingSystem>WINDOWS</jenkinsOperatingSystem>
+						<jenkinsBrowser>CHROME</jenkinsBrowser>
+						<jenkinsTestEnvironment>STAGING</jenkinsTestEnvironment>
+					</systemPropertyVariables>
 
-				<configuration>				
-					<suiteXmlFiles>
-						<suiteXmlFile>${testNGSourceDirectory}/MavenBuild.xml</suiteXmlFile>
-					</suiteXmlFiles>
-					
-					
-               		<workingDirectory>target/</workingDirectory>	
-				</configuration>
-			</plugin>
+        		</configuration>
+        	</plugin>
+			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -83,18 +82,11 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</pluginManagement>
 </build>
 	
-<reporting>
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-surefire-report-plugin</artifactId>
-			<version>2.12.4</version>
-		</plugin>
-	</plugins>
-</reporting>
+
 
 </project>

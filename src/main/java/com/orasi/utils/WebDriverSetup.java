@@ -3,14 +3,10 @@ package com.orasi.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Platform;
@@ -23,7 +19,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-import org.testng.Assert;
+import org.junit.Assert;
 
 public class WebDriverSetup {
 
@@ -372,7 +368,7 @@ public class WebDriverSetup {
 		 * current Windows OS is one that can be handled by the framework.
 		 */
 		case "mac": case "linux": case "unix": case "android":
-			TestReporter.assertTrue(platform.trim().replace(" ", "").equalsIgnoreCase(operatingSystem.toString().toLowerCase().trim().replace(" ", "")), "The System OS ["+platform.trim().replace(" ", "")+"] did not match that which was passed in the TestNG XML ["+operatingSystem.toString().toLowerCase().trim().replace(" ", "")+"].");
+			Assert.assertTrue("The System OS ["+platform.trim().replace(" ", "")+"] did not match that which was passed in the TestNG XML ["+operatingSystem.toString().toLowerCase().trim().replace(" ", "")+"].", platform.trim().replace(" ", "").equalsIgnoreCase(operatingSystem.toString().toLowerCase().trim().replace(" ", "")));
 			break;			
 		default:
 			String[] knownPlatformValues = {"windows", "xp", "vista", "win8", "win8_1"};
@@ -383,8 +379,8 @@ public class WebDriverSetup {
 					break;
 				}
 			}
-			TestReporter.assertTrue(osFound, "Validating expected vs. actual operating systems");
-			Assert.assertTrue(osFound, "The System OS ["+platform+"] did not match that which was passed in the TestNG XML ["+operatingSystem+"].");
+			Assert.assertTrue("Validating expected vs. actual operating systems", osFound);
+			Assert.assertTrue("The System OS ["+platform+"] did not match that which was passed in the TestNG XML ["+operatingSystem+"].", osFound);
 			break;
 		}
 	}
@@ -411,7 +407,7 @@ public class WebDriverSetup {
 		String homeDirectory = "/home";	
 		//Define the Firefox version
 		String firefoxVersion = browserVersion;
-		Assert.assertEquals(browserVersion.isEmpty(), false, "To ensure Firefox binaries are loaded on a Linux OS, a browser version is needed (e.g. 31.0) to be passed from the testNG XML.");
+		Assert.assertEquals( "To ensure Firefox binaries are loaded on a Linux OS, a browser version is needed (e.g. 31.0) to be passed from the testNG XML.", browserVersion.isEmpty(), false);
 		//Define the binary directory
 		String binaryDirectory = "firefox";
 		//Define the expected binary location from the user's home directory
@@ -436,34 +432,34 @@ public class WebDriverSetup {
 			proc = Runtime.getRuntime().exec(new String[]{bashLocation,bashArguments,"wget " + binaryMozillaUrl });
 			proc.waitFor();
 			System.out.println(".......done");
-			Assert.assertEquals(checkShellProcessForErrors(proc), 0, "Invoking wget on the URL ["+binaryMozillaUrl+"] resulted in an error. The Linux Firefox binaries were not downloaded successfully.");
+			Assert.assertEquals("Invoking wget on the URL ["+binaryMozillaUrl+"] resulted in an error. The Linux Firefox binaries were not downloaded successfully.", checkShellProcessForErrors(proc), 0 );
 			
 			//Unzip the file
 			System.out.print("Unzipping the file: "+binaryContainer);
 			proc = Runtime.getRuntime().exec(new String[]{bashLocation,bashArguments,"bunzip2 " + binaryContainer });
 			proc.waitFor();
 			System.out.println(".......done");
-			Assert.assertEquals(checkShellProcessForErrors(proc), 0, "An error was encountered while unzipping the file ["+binaryContainer+"].");
+			Assert.assertEquals("An error was encountered while unzipping the file ["+binaryContainer+"].", checkShellProcessForErrors(proc), 0 );
 			
 			//Extract the file files from the archive
 			System.out.print("Extracting the files from: "+binaryTarball);
 			proc = Runtime.getRuntime().exec(new String[]{bashLocation,bashArguments,"tar -xvf " + binaryTarball});
 			proc.waitFor();
 			System.out.println(".......done");
-			Assert.assertEquals(checkShellProcessForErrors(proc), 0, "An error was encountered while decompressing the tarball ["+binaryTarball+"].");
+			Assert.assertEquals("An error was encountered while decompressing the tarball ["+binaryTarball+"].", checkShellProcessForErrors(proc), 0 );
 			
 			//Move the file to the preferred location
 			System.out.print("Moving the directory: "+binaryDirectory);
 			proc = Runtime.getRuntime().exec(new String[]{bashLocation,bashArguments,"mv firefox " + homeDirectory + "/"+ username});
 			proc.waitFor();
 			System.out.println(".......done");
-			Assert.assertEquals(checkShellProcessForErrors(proc), 0, "An error was encountered moving the file from the current working directory to ["+homeDirectory + "/"+ username+"].");
+			Assert.assertEquals("An error was encountered moving the file from the current working directory to ["+homeDirectory + "/"+ username+"].", checkShellProcessForErrors(proc), 0 );
 			
 			//Verify that the binaries are now found
 			System.out.print("Verifying binaries");
-			Assert.assertTrue(linuxFirefoxfindBinaries(homeDirectory, binaryLocation), "The binaries were not found after extracting the files from the tarball.");
+			Assert.assertTrue("The binaries were not found after extracting the files from the tarball.", linuxFirefoxfindBinaries(homeDirectory, binaryLocation) );
 			file = new File(homeDirectory + "/" + username + "/" + binaryLocation);
-			Assert.assertTrue(file.canExecute(), "The file was found, but is not an executable.");
+			Assert.assertTrue("The file was found, but is not an executable.", file.canExecute() );
 			System.out.println(".......done");
 		}
 	}
@@ -480,14 +476,14 @@ public class WebDriverSetup {
 		boolean binariesFound = false;
 		File file = new File(homeDirectory);
 		//Ensure the home directory exists
-		Assert.assertTrue(file.exists(), "The expected home directory '"+homeDirectory+"' was not found to exist.");
-		Assert.assertTrue(file.isDirectory(), "An object with the path '"+homeDirectory+"' was found to exist but is not a directory.");
+		Assert.assertTrue("The expected home directory '"+homeDirectory+"' was not found to exist.", file.exists());
+		Assert.assertTrue("An object with the path '"+homeDirectory+"' was found to exist but is not a directory.", file.isDirectory());
 		/*
 		 * Grab a list of the contents of the home directory and iterate 
 		 *   through each item to see if the binarie exists
 		 */
 		String[] contents = file.list();
-		Assert.assertNotEquals(contents.length, 0, "The home directory was found, but did not contain any child items or content.");
+		Assert.assertNotEquals("The home directory was found, but did not contain any child items or content.", contents.length, 0);
 		for(String content: contents){
 			username = content;
 			file = new File(homeDirectory + "/" + username);
